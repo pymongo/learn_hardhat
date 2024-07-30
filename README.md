@@ -1,3 +1,5 @@
+hardhat 提示 solc 版本不一致: vscode setting Solidity: Default Compiler localFile
+
 # Sample Hardhat Project
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
