@@ -7,6 +7,14 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract MultiCall {
     using Strings for uint256;
 
+    function call(address addr, uint256 inputs) public {
+        (bool success, bytes memory output) = addr.call(
+            abi.encodeWithSignature("set(uint256)", inputs)
+        );
+        require(output.length >= 0);
+        require(success);
+    }
+
     struct Call {
         address addr;
         bytes data;

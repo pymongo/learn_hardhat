@@ -4,7 +4,9 @@ const {
 } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
 const { expect } = require("chai");
+const { ethers } = require("hardhat");
 
+// npx hardhat test test/call.js 
 describe("call", async function () {
     it("should deploy contract and call functions", async function () {
         // const lockedAmount = ethers.utils.parseEther("0.1"); // or any other amount you want
@@ -16,9 +18,20 @@ describe("call", async function () {
         from (string)：要部署合约的账户地址，通常可以省略，适用于当前钱包地址。
         */
         const options = {}
-        const contract = await hre.ethers.deployContract("Data", construtor_args, options)
 
-        const r = await contract.getSelector();
-        console.info(r);
+        console.info("start")
+        await ethers.getContractFactory("Data")
+        console.info("1")
+        const d = await ethers.deployContract("Data", construtor_args, options)
+        console.info(2)
+        const r = await hre.ethers.deployContract("MultiCall")
+        console.info(3)
+        const d1 = await d.get()
+        console.info(4)
+        await r.call(d, 1000)
+        console.info(5)
+        const d2 = await d.get()
+        console.info(6)
+        console.info(`d1,d2 ${d1},${d2}`)
     });
 })
