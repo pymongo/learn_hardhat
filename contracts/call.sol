@@ -4,7 +4,7 @@ pragma solidity ^0.8.24;
 
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract MultiCall {
+contract Caller {
     using Strings for uint256;
 
     function call(address addr, uint256 inputs) public {
@@ -12,7 +12,15 @@ contract MultiCall {
             abi.encodeWithSignature("set(uint256)", inputs)
         );
         require(output.length >= 0);
-        require(success);
+        require(success, "call fail");
+    }
+
+    function delegatecall(address addr, uint256 inputs) public {
+        (bool success, bytes memory output) = addr.delegatecall(
+            abi.encodeWithSignature("set(uint256)", inputs)
+        );
+        require(output.length >= 0);
+        require(success, "delegatecall fail");
     }
 
     struct Call {
@@ -29,6 +37,18 @@ contract MultiCall {
             );
         }
     }
+    function test_multicall(address addr) public {
+        Call[] memory calls = new Call[](2);
+        calls[0] = Call({
+            addr: addr,
+            data: abi.encodeWithSignature("set(uint256)", 400)
+        });
+        calls[1] = Call({
+            addr: addr,
+            data: abi.encodeWithSignature("set(uint256)", 500)
+        });
+        this.multicall(calls);
+    }    
 }
 
 contract Data {
