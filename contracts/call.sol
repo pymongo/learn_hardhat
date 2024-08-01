@@ -49,9 +49,17 @@ contract Caller {
         });
         this.multicall(calls);
     }    
+    function interface_call(address addr, uint256 input) public {
+        IData(addr).set(input);
+    }
 }
 
-contract Data {
+interface IData {
+    function get() external view returns (uint256);
+    function set(uint256) external;
+}
+
+contract Data is IData {
     uint256 public data;
 
     constructor() {

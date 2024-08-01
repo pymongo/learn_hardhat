@@ -32,5 +32,7 @@ describe("call", async function () {
         console.info(`data=${await d.get()}`)
         await r.test_multicall(d)
         console.info(`data=${await d.get()}`)
+        await r.interface_call(d, 600)
+        console.info(`data=${await d.get()}`)
     });
 })
